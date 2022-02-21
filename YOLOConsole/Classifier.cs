@@ -7,13 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using System.Drawing;
-using YOLOv4MLNet.DataStructures;
+using System.Windows.Media.Imaging;
+using YOLOConsole.DataStructures;
 
-namespace YOLOv4MLNet
+namespace YOLOConsole
 {
     public static class Classifier
     {
-        const string modelPath = @"C:\Users\kuris\Documents\BEREZIN\YOLOv4MLNet\yolov4.onnx";
+        const string modelPath = @"C:\Users\kuris\Documents\GitHub\yolov4.onnx";
         static readonly string[] classesNames = new string[] { "person", "bicycle", "car", "motorbike", "aeroplane", "bus", "train", "truck", "boat", "traffic light", "fire hydrant", "stop sign", "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra", "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard", "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket", "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange", "broccoli", "carrot", "hot dog", "pizza", "donut", "cake", "chair", "sofa", "pottedplant", "bed", "diningtable", "toilet", "tvmonitor", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair drier", "toothbrush" };
 
         public static async Task ClassifyAsync(string imageFolder, CancellationToken token, BufferBlock<IReadOnlyList<YoloV4Result>> resultBuffer)
@@ -61,6 +62,10 @@ namespace YOLOv4MLNet
 
                             if (token.IsCancellationRequested) return;
                             var results = predict.GetResults(classesNames, 0.3f, 0.7f);
+
+                            foreach (var item in results)
+                                item.SetImgName(imageName);
+
                             resultBuffer.Post(results);
                         }
                     }
