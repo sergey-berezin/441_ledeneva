@@ -4,15 +4,14 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
-using YOLOv4MLNet.DataStructures;
+using YOLOConsole.DataStructures;
 
-namespace YOLOv4MLNet
+namespace YOLOConsole
 {
     class Program
     {
-        const string imageFolder = @"C:\Users\kuris\Documents\GitHub\441_ledeneva\Assets\Images";
+        const string imageFolder = @"C:\Users\kuris\Documents\GitHub\441_ledeneva\YOLOConsole\Assets\Images";
 
-        //const string imageOutputFolder = @"C:\Users\kuris\Documents\BEREZIN\YOLOv4MLNet\Assets\Output";
         static async Task ClassesProcessingAsync(ISourceBlock<IReadOnlyList<YoloV4Result>> src, Dictionary<string, int> foundClasses)
         {
             int imagesCnt = Directory.GetFiles(imageFolder, "*.jpg").Length;
